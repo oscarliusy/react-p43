@@ -12,7 +12,7 @@ const testHOC = (WrappedComponent) => {
             )
         }
     }
-}
+} 
 
 @testHOC
 class App extends Component {
