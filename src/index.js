@@ -19,7 +19,13 @@ render(
                     return <Route key={route.pathname} path={route.pathname} component={route.component}/>
                 })
             }
+            {/*
+               如果输入/，则重定向至/#/admin
+            */}
             <Redirect to="/admin" from="/" exact />
+            {/*
+               如果输入未定义的路径，则重定向至/#/404
+            */}
             <Redirect to="/404" />
         </Switch> 
         
