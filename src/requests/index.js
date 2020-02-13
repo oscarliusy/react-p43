@@ -1,16 +1,12 @@
 import axios from 'axios'
-
+import {message} from 'antd'
 const isDev = process.env.NODE_ENV === 'development'
 
 const service = axios.create({
     baseURL: isDev ? 'http://rap2api.taobao.org/app/mock/244229' : ''
 })
 
-// const service = axios.create({
-//     baseURL: 'http://rap2api.taobao.org/app/mock/244229'
-// })
-
-service.interceptors.request.user((config)=>{
+service.interceptors.request.use((config)=>{
     config.data = Object.assign({},config.data,{
         //authToken:window.localStorage.getItem('authToken')
         authToken:'itisatoken'
@@ -23,9 +19,13 @@ service.interceptors.response.use((resp)=>{
         return resp.data.data
     }else{
         //全局处理错误
+        message.error(resp.data.errMsg)
     }
 })
 
-export const getArticles = () =>{
-    return service.post('/api/v1/articleList')
+export const getArticles = (offset = 0, limited = 10) =>{
+    return service.post('/api/v1/articleList',{
+        offset,
+        limited
+    })
 }
