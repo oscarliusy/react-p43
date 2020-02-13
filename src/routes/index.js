@@ -14,7 +14,7 @@ import {
 } from '../views'
 
 //不需要登录就能访问的页面
-export const mainRouter = [{
+export const mainRoutes = [{
     pathname:'/login',
     component:Login
 },{
@@ -23,16 +23,25 @@ export const mainRouter = [{
 }]
 
 //需要登录才能访问的页面
-export const adminRouter = [{
+export const adminRoutes = [{
     pathname:'/admin/dashboard',
-    component:Dashboard
-},{
-    pathname:'/admin/settings',
-    component:Settings
+    component:Dashboard,
+    title:'仪表盘',
+    isNav:true,
+    icon:'dashboard'
 },{
     pathname:'/admin/article',
     component:ArticleList,
-    exact:true
+    exact:true,
+    title:'文章管理',
+    isNav:true,
+    icon:'container'
+},{
+    pathname:'/admin/settings',
+    component:Settings,
+    title:'设置',
+    isNav:true,
+    icon:'setting'
 },{
     pathname:'/admin/article/edit/:id',
     component:ArticleEdit

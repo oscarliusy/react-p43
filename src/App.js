@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
-import { adminRouter } from './routes'
+import { adminRoutes } from './routes'
 import { Route,Switch,Redirect } from 'react-router-dom'
-
+import { Frame } from '../src/components'
+const menus = adminRoutes.filter(route=>route.isNav === true)
 
 class App extends Component {
     render() {
         return (
-            <div >
-                <div>这里是公共的部分</div>
-            
-            <Switch>
+            <Frame menus = {menus}>
+                <Switch>
                 {
-                    adminRouter.map(route=>{
+                    adminRoutes.map(route=>{
                         //这里没有使用component= route.component,而是使用render方法
                         return (
                             <Route 
@@ -28,10 +27,10 @@ class App extends Component {
                 {/* 如果输入/admin，默认跳转adminRouter第一项，dashboard 
                 *未知路径重定向404
                 */}
-                <Redirect to={adminRouter[0].pathname} from='/admin' exact />
+                <Redirect to={adminRoutes[0].pathname} from='/admin' exact />
                 <Redirect to='/404/' />
             </Switch>
-            </div>
+            </Frame>
         )
     }
 }
