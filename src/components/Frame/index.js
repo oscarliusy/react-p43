@@ -13,7 +13,9 @@ class Frame extends Component {
         })
     }
     render() {
-        
+        //在文章列表和文章编辑时，都高亮文章管理标签
+        const selectedKeysArr = this.props.location.pathname.split('/')
+        selectedKeysArr.length = 3
         return (
             <Layout style={{minHeight:'100%'}}>
             <Header className="header spl-header">
@@ -25,7 +27,7 @@ class Frame extends Component {
               <Sider width={200} style={{ background: '#fff' }}>
                 <Menu
                   mode="inline"
-                  selectedKeys={[this.props.location.pathname]}
+                  selectedKeys={[selectedKeysArr.join('/')]}
                   onClick = {this.onMenuClick}
                   style={{ height: '100%', borderRight: 0 }}
                 >
