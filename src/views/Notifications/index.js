@@ -3,44 +3,53 @@ import {
     Card,
     Button,
     List, 
-    Avatar,
     Badge
 } from 'antd'
+import { connect} from 'react-redux'
+import { markNotificationAsReadById,markAllNotificationsAsRead } from '../../actions/notifications'
 
-const data = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ]
 
-export default class Notifications extends Component {
+
+const mapState = state =>{
+  const {
+    list
+  } = state.notifications
+  return {
+    list
+  }
+}
+
+@connect(mapState,{ markNotificationAsReadById,markAllNotificationsAsRead })
+class Notifications extends Component {
+  
     render() {
         return (
             <Card
                 title="通知中心"
                 bordered={false}
-                extra={<Button>全部标记为已读</Button>}
+                extra={<Button 
+                    disabled={this.props.list.every(item => item.hasRead === true)}
+                    onClick = {this.props.markAllNotificationsAsRead}
+                    >全部标记为已读</Button>}
             >
                 <List
                     itemLayout="horizontal"
-                    dataSource={data}
+                    dataSource={this.props.list}
                     renderItem={item => (
                     <List.Item
-                     extra={<Button>标记为已读</Button>}
+                     extra={
+                            item.hasRead 
+                            ? 
+                            null 
+                            : 
+                            <Button onClick={this.props.markNotificationAsReadById.bind(this,item.id)}>
+                                标记为已读
+                            </Button>
+                        }
                     >
                         <List.Item.Meta
-                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                        title={<Badge dot>{item.title}</Badge>}
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        title={<Badge dot={!item.hasRead}>{item.title}</Badge>}
+                        description={item.desc}
                         />
                     </List.Item>
                     )}
@@ -49,3 +58,5 @@ export default class Notifications extends Component {
         )
     }
 }
+
+export default Notifications
