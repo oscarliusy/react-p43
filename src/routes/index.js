@@ -10,7 +10,9 @@ import {
 
     ArticleList,
 
-    ArticleEdit
+    ArticleEdit,
+
+    Notifications
 } from '../views'
 
 //不需要登录就能访问的页面
@@ -45,5 +47,8 @@ export const adminRoutes = [{
 },{
     pathname:'/admin/article/edit/:id',
     component:ArticleEdit
+},{
+    pathname:'/admin/notifications',
+    component:Notifications
 }]
 

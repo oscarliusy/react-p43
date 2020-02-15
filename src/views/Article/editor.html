@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="boldStyle()">加粗</button><button onclick="italicStyle()">倾斜</button><button onclick="redFont()">加红</button>
+    <div contenteditable stye="border: 1px solid #dedede; width: 500px; min-height:300px">
+        <img src="http://img0.imgtn.bdimg.com/it/u=1071853271,30458875&fm=26&gp=0.jpg" />
+    </div>
+    <script>
+        var boldStyle = function(){
+            document.execCommand('Bold')
+        }
+
+        var italicStyle = function(){
+            document.execCommand('Italic')
+        }
+        var redFont = function(){
+            document.execCommand('foreColor',null,'#F00')
+        }
+    </script>
+</body>
+</html>
