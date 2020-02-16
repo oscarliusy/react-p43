@@ -2,11 +2,20 @@ import React, { Component } from 'react'
 import { adminRoutes } from './routes'
 import { Route,Switch,Redirect } from 'react-router-dom'
 import { Frame } from '../src/components'
+import {connect} from 'react-redux'
 const menus = adminRoutes.filter(route=>route.isNav === true)
 
+const mapState = state =>({
+    isLogin:state.user.isLogin,
+    role:state.user.role
+})
+
+@connect(mapState)
 class App extends Component {
     render() {
         return (
+            this.props.isLogin
+            ?
             <Frame menus = {menus}>
                 <Switch>
                 {
@@ -18,7 +27,8 @@ class App extends Component {
                                 path={route.pathname} 
                                 exact = {route.exact}
                                 render={(routerProps)=>{
-                                    return < route.component {...routerProps}/>                        
+                                    const hasPermission = route.roles.includes(this.props.role)
+                                    return hasPermission ? < route.component {...routerProps}/> : <Redirect to="/admin/noauth" />                       
                                 }}
                             />
                         )
@@ -31,6 +41,8 @@ class App extends Component {
                 <Redirect to='/404/' />
             </Switch>
             </Frame>
+            :
+            <Redirect to="/login" />
         )
     }
 }

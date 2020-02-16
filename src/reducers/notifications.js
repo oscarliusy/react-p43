@@ -17,6 +17,21 @@ const initState = {
 
 export default ( state=initState,action) =>{
     switch(action.type){
+        case actionTypes.RECEIVE_NOTIFICATIONS:
+            return {
+                ...state,
+                list:action.payload.resp.list
+            }
+        case actionTypes.START_NOTIFICATION_POST:
+            return {
+                ...state,
+                isLoading:true
+            }
+        case actionTypes.FINISH_NOTIFICATION_POST:
+            return {
+                ...state,
+                isLoading:false
+            }
         case actionTypes.MARK_NOTIFICATION_AS_READ_BY_ID:
             const newList = state.list.map(item =>{
                 if(item.id === action.payload.id){

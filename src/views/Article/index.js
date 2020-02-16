@@ -141,12 +141,20 @@ export default class ArticleList extends Component {
       deleteArticleModalTitle:''
     })
   }
+  //封装后版本
+  // setData = (state) =>{
+  //   if(!this.updater.isMounted(this)) return
+  //   this.setState(state)
+  // }
 
   getData = () =>{
     getArticles(this.state.offset,this.state.limited)
     .then(resp=>{
         const columnsKeys = Object.keys(resp.list[0])
         const columns = this.createColumns(columnsKeys)
+        //如果加载数据前组件被销毁，就不setState
+        //console.log('set',this.updater.isMounted(this))
+        if(!this.updater.isMounted(this)) return
         this.setState({
           columns:columns,
           dataSource:resp.list,
@@ -157,6 +165,8 @@ export default class ArticleList extends Component {
       //处理错误
     })
     .finally(()=>{
+      //如果加载数据前组件被销毁，就不setState
+      if(!this.updater.isMounted(this)) return
       this.setState({
         isLoading: false
       })
@@ -207,6 +217,11 @@ export default class ArticleList extends Component {
   componentDidMount(){
     this.setState({ isLoading: true });
     this.getData()
+    //console.log('mount',this.updater.isMounted(this))
+  }
+
+  componentWillUnmount(){
+    //console.log('unmount',this.updater.isMounted(this))
   }
   render() {
       return (

@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 import { Layout, Menu, Icon,Dropdown,Avatar,Badge } from 'antd'
+
 import { withRouter } from 'react-router-dom'
 import logo  from './logo.png'
 import './Frame.less'
 import { connect} from 'react-redux'
-const { Header, Content, Sider } = Layout
+import { notificationPost } from '../../actions/notifications'
+import { logout } from '../../actions/user'
 
+
+const { Header, Content, Sider } = Layout
 const mapState = state =>{
   return {
-    notificationsCount: state.notifications.list.filter(item=>item.hasRead === false).length
+    notificationsCount: state.notifications.list.filter(item=>item.hasRead === false).length,
+    avatar:state.user.avatar,
+    displayName:state.user.displayName
   }
 }
 
-@connect(mapState)
+@connect(mapState,{ notificationPost,logout })
 @withRouter
 class Frame extends Component {
   onMenuClick=({key})=>{
@@ -22,9 +28,11 @@ class Frame extends Component {
   }
 
   onDropdownMenuClick=({key})=>{
-    this.props.history.push({
-        pathname:key
-    })
+    if(key === '/logout'){
+      this.props.logout()
+    }else{
+      this.props.history.push({pathname:key})
+    }  
   }
 
   renderDropdown=()=> (
@@ -37,17 +45,21 @@ class Frame extends Component {
         </Badge>
       </Menu.Item>
       <Menu.Item
-        key="/admin/settings"
+        key="/admin/profile"
         >
         个人设置
       </Menu.Item>
       <Menu.Item
-        key="/login"
+        key="/logout"
       >
         退出登录
       </Menu.Item>
     </Menu>
   );
+
+  componentDidMount(){
+    this.props.notificationPost()
+  }
   render() {
     
     //在文章列表和文章编辑时，都高亮文章管理标签
@@ -62,8 +74,8 @@ class Frame extends Component {
           <div>
             <Dropdown overlay={this.renderDropdown()} trigger={['click','hover']}>
               <div style={{display:'flex',alignItems:'center'}}> 
-                <Avatar style={{ backgroundColor: '#87d068', size:'small' }} icon="user" />
-                <span>欢迎您！oscar</span> 
+                <Avatar  src={this.props.avatar} />
+                 <span>欢迎您！{this.props.displayName}</span> 
                 <Badge count={this.props.notificationsCount} offset={[0,0]}>
                 <Icon type="down" />
                 </Badge> 
