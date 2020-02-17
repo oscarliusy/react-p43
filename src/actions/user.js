@@ -28,6 +28,15 @@ const loginFailed = () =>{
     }
 }
 
+export const changeAvatar = (avatarUrl)  =>{
+    return {
+        type: actionTypes.CHANGE_AVATAR,
+        payload:{
+            avatarUrl
+        }
+    }
+}
+
 export const logout = ()=>{
     return dispatch =>{
         dispatch(loginFailed())
